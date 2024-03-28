@@ -1,0 +1,121 @@
+---
+title: "STA288 Final Project"
+author: "Belal Hajjaj, Aaron Jin, Justin Yu, Brandon Luong, Modhar Al Qasser"
+date: "2024-03-27"
+geometry: margin = 0.5in
+output: 
+  pdf_document: default
+---
+
+
+## Author Contributions
+BH, AJ, JY, BL, and MA - contributed to the development of the methodology  
+BH, AJ, JY, BL, and MA - contributed to the data collection  
+JY - contributed to R-markdown files
+JY - contributed to statistical analysis of the data  
+JY - contributed to drafting and writing the report  
+
+## Introduction
+
+## Materials and Methods
+Participants were sampled from the village of Arcadia on the island of Providence. Arcadia was chosen for its large population size of 4339, which encompasses a larger range of individuals than other villages, improving generalizability. Since there was no feasible method of obtaining a list of all individuals to take a simple random sample, a multistage sampling strategy was employed. Only adults at least 19 years of age were included to ensure participants were old enough to drink and complete study tasks.
+
+Excel functions were used to generate a list of 100 house numbers out of the 1571 houses in Arcadia. From each selected house, the adults were numbered in order of appearance. R `runif()` was then used to generate a random number, and the corresponding resident was selected.
+
+Participants who did not provide consent, empty houses, and duplicates were removed from the data, resulting in a final sample size of n = 90.
+
+## ANALYSIS (TEMPORARY)
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+```
+**Import data**
+```{r}
+raw <- read_csv("data.csv")
+```
+**Standardize data formatting**
+```{r}
+data <- raw %>%
+  # keep only entries with data
+  filter(Alcohol_consumption != "DUPLICATE" & Alcohol_consumption != "EMPTY" & Alcohol_consumption != "NO CONSENT") %>% 
+  # clean up formatting
+  mutate(Name = str_to_title(Name), # change all names to title case
+        
+        # standardize alcohol consumption format
+        Alcohol_consumption = case_when(
+          str_detect(Alcohol_consumption, fixed("several times each season", ignore_case = T)) ~ "Several times each season",
+          str_detect(Alcohol_consumption, fixed("once or twice each season", ignore_case = T)) ~ "Once or twice each season",
+          str_detect(Alcohol_consumption, fixed("once or twice a year", ignore_case = T)) ~ "Once or twice a year",
+          str_detect(Alcohol_consumption, fixed("couple of times each day", ignore_case = T)) ~ "Couple of times each day",
+          str_detect(Alcohol_consumption, fixed("drink each day", ignore_case = T)) ~ "Once each day"
+        ),
+        
+        # standardize forgetfulness format
+        Forgetful = case_when(
+          str_detect(Forgetful, fixed("not at all", ignore_case = T)) ~ "Not at all",
+          str_detect(Forgetful, fixed("a little", ignore_case = T)) ~ "A little",
+          str_detect(Forgetful, fixed("moderately", ignore_case = T)) ~ "Moderately",
+          str_detect(Forgetful, fixed("moderatly", ignore_case = T)) ~ "Moderately" # typo in one entry
+        )
+  )
+```
+
+**Preliminary Analyses**
+*TEMPORARY: These results will be summarized using side-by-side boxplots, numerical summaries (mean,
+median, standard deviation, range), histograms, and stacked bar charts. The numerical summaries will
+provide a general overview of the center and spread/variation among the memory tests. The side-by-side
+boxplots will allow us to visualize the central tendencies and the spread of the memory tests among each
+group. Furthermore, histograms will allow us to analyze the shape of the results of the memory tests.
+The qualitative response variable will be visualized and analyzed through the stacked bar chart as it allows
+us to make comparisons across each group.*
+
+```{r}
+# side by side histograms
+
+# cards
+data %>% 
+  # order by increasing consumption
+  mutate(Alcohol_consumption = factor(Alcohol_consumption, levels=c("Once or twice a year", "Once or twice each season", "Several times each season", "Once each day", "Couple of times each day"))) %>% 
+  ggplot(aes(x = Alcohol_consumption, y = Cards)) +
+  geom_boxplot() +
+  theme(axis.text.x = element_text(angle = 10, vjust = 0.5))
+
+# vocab
+data %>% 
+  # order by increasing consumption
+  mutate(Alcohol_consumption = factor(Alcohol_consumption, levels=c("Once or twice a year", "Once or twice each season", "Several times each season", "Once each day", "Couple of times each day"))) %>% 
+  ggplot(aes(x = Alcohol_consumption, y = Vocab)) +
+  geom_boxplot() +
+  theme(axis.text.x = element_text(angle = 10, vjust = 0.5))
+
+# mosaic of forgetfulness (totally unreadable)
+# create two-way table
+mostable <- table(data$Alcohol_consumption, data$Forgetful)
+mostable
+
+# create mosaic plot
+mosaicplot(mostable, main = "Self-reported Forgetfulness by Alcohol Consumption Frequency", las=2)
+
+# replace with ggplot
+```
+**Hypothesis tests**
+```{r}
+anova_cards <- aov(data$Cards ~ data$Alcohol_consumption)
+summary(anova_cards)
+
+anova_vocab <- aov(data$Vocab ~ data$Alcohol_consumption)
+summary(anova_vocab)
+
+chisq.test(data$Alcohol_consumption, data$Forgetful)
+```
+
+## Results
+
+## Conclusions
+
+## Discussion
+
+## References
+
+## Appendix
