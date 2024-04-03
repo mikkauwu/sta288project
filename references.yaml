@@ -1,0 +1,59 @@
+---
+references:
+- id: kruskal1952
+  author:
+  - family: Kruskal
+    given: William H.
+  - family: Wallis
+    given: W. Allen
+  container-title: Journal of the American Statistical Association
+  container-title-short: Journal of the American Statistical Association
+  DOI: 10.1080/01621459.1952.10483441
+  is-referenced-by-count: 6626
+  ISSN: 0162-1459
+  issue: 260
+  issued: 1952-12
+  language: en
+  member: 301
+  page: 583-621
+  prefix: 10.1080
+  providerKey: doi
+  publisher: Informa UK Limited
+  reference-count: 69
+  references-count: 69
+  score: 1
+  source: Crossref
+  subject: Statistics, Probability and Uncertainty
+  title: Use of Ranks in One-Criterion Variance Analysis
+  type: article-journal
+  URL: "http://dx.doi.org/10.1080/01621459.1952.10483441"
+  volume: 47
+- id: hope1968
+  author:
+  - family: Hope
+    given: Adery C. A.
+  container-title: "Journal of the Royal Statistical Society: Series B
+    (Methodological)"
+  container-title-short: "Journal of the Royal Statistical Society:
+    Series B (Methodological)"
+  DOI: 10.1111/j.2517-6161.1968.tb00759.x
+  is-referenced-by-count: 164
+  ISSN: 0035-9246
+  issue: 3
+  issued: 1968-09
+  language: en
+  member: 311
+  page: 582-598
+  prefix: 10.1111
+  providerKey: crossref
+  publisher: Wiley
+  reference-count: 4
+  references-count: 4
+  score: 1
+  source: Crossref
+  subject: Statistics and Probability
+  title: A Simplified Monte Carlo Significance Test Procedure
+  type: article-journal
+  URL: "http://dx.doi.org/10.1111/j.2517-6161.1968.tb00759.x"
+  volume: 30
+...
